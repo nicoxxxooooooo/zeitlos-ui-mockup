@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Coffee,
   Flame,
+  HomeIcon,
   Library,
   Search,
   ShieldAlert,
@@ -200,6 +201,43 @@ function seriesHref(title: string) {
   return series ? `/series/${series.slug}` : "/series";
 }
 
+function MobileBottomNav() {
+  const items = [
+    { label: "Series", href: "/series", icon: BookOpen },
+    { label: "Library", href: "#library", icon: Library },
+    { label: "Home", href: "#", icon: HomeIcon, active: true },
+    { label: "Alerts", href: "#", icon: Bell },
+    { label: "Profile", href: "#", icon: UserCircle },
+  ];
+
+  return (
+    <nav className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 pb-[env(safe-area-inset-bottom)] md:hidden">
+      <div className="grid w-full max-w-[390px] grid-cols-5 items-end rounded-[2rem] border border-white/10 bg-black/72 px-3 py-2 shadow-2xl shadow-black/55 backdrop-blur-2xl">
+        {items.map(({ label, href, icon: Icon, active }) => (
+          <a
+            key={label}
+            href={href}
+            className={`flex flex-col items-center justify-end gap-1 rounded-2xl py-1.5 text-[10px] font-semibold transition ${
+              active ? "text-[#f3f3f3]" : "text-zinc-500 hover:text-[#f3f3f3]"
+            }`}
+          >
+            <span
+              className={`grid place-items-center rounded-2xl transition ${
+                active
+                  ? "-mt-6 size-14 border border-[#b11219]/60 bg-[#b11219] shadow-[0_0_24px_rgba(177,18,25,0.35)]"
+                  : "size-9 bg-white/[0.045]"
+              }`}
+            >
+              <Icon className={active ? "size-6" : "size-4"} />
+            </span>
+            <span>{label}</span>
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
 export default function Home() {
   const [activeHero, setActiveHero] = useState(1);
   const [heroPaused, setHeroPaused] = useState(false);
@@ -242,7 +280,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#050505] font-sans text-[#ededed]">
+    <main className="min-h-screen bg-[#050505] pb-28 font-sans text-[#ededed] md:pb-0">
       <style>
         {`
           @keyframes cover-breathe {
@@ -287,6 +325,7 @@ export default function Home() {
           </div>
         </div>
       </nav>
+      <MobileBottomNav />
 
       <section
         className="mx-auto max-w-[1800px] px-4 pt-24 sm:px-6 lg:px-8"
@@ -419,12 +458,12 @@ export default function Home() {
           <BookOpen className="size-5 text-[#b11219]" />
           <SectionTitle>Novels</SectionTitle>
         </div>
-        <div className="grid gap-5 xl:grid-cols-2">
+        <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden xl:mx-0 xl:grid xl:grid-cols-2 xl:overflow-visible xl:px-0 xl:pb-0">
           {novels.map((novel) => (
             <Link
               key={novel.title}
               href={seriesHref(novel.title)}
-              className="group relative min-h-[350px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#101010] shadow-2xl shadow-black/30 transition duration-300 hover:border-[#b11219]/25 hover:shadow-[0_0_34px_rgba(177,18,25,0.11)]"
+              className="group relative min-h-0 w-[88vw] shrink-0 snap-center overflow-hidden rounded-[2rem] border border-white/10 bg-[#101010] shadow-2xl shadow-black/30 transition duration-300 hover:border-[#b11219]/25 hover:shadow-[0_0_34px_rgba(177,18,25,0.11)] xl:min-h-[350px] xl:w-auto"
             >
               <Image
                 src={novel.image}
@@ -439,8 +478,8 @@ export default function Home() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.14),transparent_26%)]" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/35 to-black/68" />
 
-              <div className="relative grid min-h-[350px] gap-6 p-5 sm:grid-cols-[220px_1fr] sm:p-6 lg:grid-cols-[235px_1fr] lg:p-7">
-                <div className="relative mx-auto aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-3xl border border-white/10 bg-black/30 shadow-2xl shadow-black/45 sm:mx-0 sm:max-w-none">
+              <div className="relative grid min-h-[230px] grid-cols-[116px_1fr] gap-4 p-4 sm:min-h-[350px] sm:grid-cols-[220px_1fr] sm:gap-6 sm:p-6 lg:grid-cols-[235px_1fr] lg:p-7">
+                <div className="relative mx-0 aspect-[3/4] w-full max-w-none overflow-hidden rounded-2xl border border-white/10 bg-black/30 shadow-2xl shadow-black/45 sm:rounded-3xl">
                   <Image
                     src={novel.image}
                     alt={`${novel.title} cover`}
@@ -453,35 +492,35 @@ export default function Home() {
                   <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-black/55 to-transparent" />
                 </div>
 
-                <div className="flex min-w-0 flex-col justify-center py-1">
-                  <div className="mb-4 flex min-h-7 flex-wrap items-center gap-2">
+                <div className="flex min-w-0 flex-col justify-center py-0 sm:py-1">
+                  <div className="mb-2 flex min-h-0 flex-wrap items-center gap-1.5 sm:mb-4 sm:min-h-7 sm:gap-2">
                     <Chip red>{novel.status}</Chip>
                     <Chip>{novel.format}</Chip>
                   </div>
-                  <h3 className="line-clamp-2 min-h-[64px] text-2xl font-bold leading-tight tracking-tight text-[#f3f3f3]">
+                  <h3 className="line-clamp-2 text-base font-bold leading-tight tracking-tight text-[#f3f3f3] sm:min-h-[64px] sm:text-2xl">
                     {novel.title}
                   </h3>
-                  <p className="mt-2 line-clamp-1 min-h-5 text-sm font-medium text-zinc-400">{novel.seriesCredit}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <p className="mt-1 line-clamp-1 text-xs font-medium text-zinc-400 sm:mt-2 sm:min-h-5 sm:text-sm">{novel.seriesCredit}</p>
+                  <div className="mt-2 flex max-h-14 flex-wrap gap-1.5 overflow-hidden sm:mt-4 sm:max-h-none sm:gap-2">
                     {novel.genres.map((genre) => (
                       <span
                         key={genre}
-                        className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-1 text-xs font-medium text-zinc-300"
+                        className="rounded-full border border-white/10 bg-white/[0.07] px-2 py-0.5 text-[10px] font-medium text-zinc-300 sm:px-3 sm:py-1 sm:text-xs"
                       >
                         {genre}
                       </span>
                     ))}
                   </div>
-                  <p className="mt-5 line-clamp-2 min-h-[48px] max-w-2xl text-sm font-normal leading-6 text-zinc-300">
+                  <p className="mt-3 line-clamp-2 max-w-2xl text-xs font-normal leading-5 text-zinc-300 sm:mt-5 sm:min-h-[48px] sm:text-sm sm:leading-6">
                     {novel.description}
                   </p>
-                  <div className="mt-7 flex items-center gap-3">
-                    <span className="rounded-2xl bg-[#b11219] px-5 py-2.5 text-sm font-semibold text-[#f3f3f3] transition group-hover:bg-[#c91f2f]">
+                  <div className="mt-4 flex items-center gap-2 sm:mt-7 sm:gap-3">
+                    <span className="rounded-2xl bg-[#b11219] px-4 py-2 text-xs font-semibold text-[#f3f3f3] transition group-hover:bg-[#c91f2f] sm:px-5 sm:py-2.5 sm:text-sm">
                       Read Now
                     </span>
                     <span
                       aria-label={`Bookmark ${novel.title}`}
-                      className="grid size-10 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-zinc-300 transition hover:border-white/20 hover:bg-white/10 hover:text-[#f3f3f3]"
+                      className="grid size-9 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-zinc-300 transition hover:border-white/20 hover:bg-white/10 hover:text-[#f3f3f3] sm:size-10"
                     >
                       <BookOpen className="size-4" />
                     </span>
@@ -500,32 +539,32 @@ export default function Home() {
         </div>
         <div className="grid gap-5 lg:grid-cols-2">
           {latestReleases.map((release) => (
-            <Link key={release.title} href={seriesHref(release.title)} className="group grid min-h-[280px] grid-cols-[128px_1fr] gap-4 rounded-3xl border border-[#27272a] bg-[#111111] p-4 transition duration-300 hover:border-[#b11219]/30 hover:bg-[#151515] hover:shadow-[0_0_24px_rgba(177,18,25,0.08)] sm:grid-cols-[174px_1fr] sm:gap-5">
-              <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${release.gradient}`}>
+            <Link key={release.title} href={seriesHref(release.title)} className="group grid min-h-0 grid-cols-[124px_1fr] gap-3 rounded-3xl border border-[#27272a] bg-[#111111] p-3 transition duration-300 hover:border-[#b11219]/30 hover:bg-[#151515] hover:shadow-[0_0_24px_rgba(177,18,25,0.08)] sm:min-h-[280px] sm:grid-cols-[174px_1fr] sm:gap-5 sm:p-4">
+              <div className={`relative aspect-[3/4] self-start overflow-hidden rounded-2xl bg-gradient-to-br ${release.gradient} sm:aspect-auto sm:self-stretch`}>
                 <Image
                   src={release.image}
                   alt={`${release.title} cover`}
                   fill
                   loading="lazy"
                   sizes="(max-width: 640px) 128px, 174px"
-                  className="h-full min-h-[250px] w-full object-cover transition duration-500 group-hover:scale-110"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
                 />
               </div>
-              <div className="flex min-w-0 flex-col justify-center py-1">
-                <div className="mb-3 flex min-h-7 flex-wrap items-center gap-2">
+              <div className="flex min-w-0 flex-col justify-center py-0 sm:py-1">
+                <div className="mb-2 flex min-h-0 flex-wrap items-center gap-1.5 sm:mb-3 sm:min-h-7 sm:gap-2">
                   <Chip red>{release.type}</Chip>
                   <Chip>{release.status}</Chip>
-                  <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-xs font-semibold text-amber-200">{release.rating}</span>
+                  <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200 sm:px-3 sm:py-1 sm:text-xs">{release.rating}</span>
                 </div>
-                <h3 className="line-clamp-2 min-h-[52px] text-lg font-semibold leading-tight tracking-tight text-zinc-100 sm:text-xl">{release.title}</h3>
-                <div className="mt-4 space-y-1.5">
+                <h3 className="line-clamp-2 min-h-0 text-sm font-semibold leading-tight tracking-tight text-zinc-100 sm:min-h-[52px] sm:text-xl">{release.title}</h3>
+                <div className="mt-2 space-y-1 sm:mt-4 sm:space-y-1.5">
                   {release.chapters.map(([chapter, date], index) => (
-                    <span key={chapter} className="flex min-h-10 items-center justify-between gap-3 rounded-xl bg-black/25 px-3.5 py-2 transition group-hover:bg-white/[0.04]">
+                    <span key={chapter} className="flex min-h-8 items-center justify-between gap-2 rounded-xl bg-black/25 px-2.5 py-1.5 transition group-hover:bg-white/[0.04] sm:min-h-10 sm:gap-3 sm:px-3.5 sm:py-2">
                       <span className="flex min-w-0 items-center gap-2">
                         {index === 0 && <span className="size-2 shrink-0 rounded-full bg-[#b11219]" />}
-                        <span className="line-clamp-1 text-sm font-medium text-zinc-300">{chapter}</span>
+                        <span className="line-clamp-1 text-xs font-medium text-zinc-300 sm:text-sm">{chapter}</span>
                       </span>
-                      <span className="shrink-0 text-xs font-medium text-zinc-500">{date}</span>
+                      <span className="shrink-0 text-[10px] font-medium text-zinc-500 sm:text-xs">{date}</span>
                     </span>
                   ))}
                 </div>
@@ -536,16 +575,16 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-white/10 bg-black/95">
-        <div className="mx-auto max-w-[1800px] px-6 py-11 lg:px-8">
-          <div className="flex flex-col gap-7 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-4">
+        <div className="mx-auto max-w-[1800px] px-6 pb-32 pt-11 md:py-11 lg:px-8">
+          <div className="flex flex-col items-center gap-7 text-center md:flex-row md:items-center md:justify-between md:text-left">
+            <div className="flex flex-col items-center gap-4 md:flex-row">
               <LogoMark footer />
               <div>
                 <div className="text-lg font-bold tracking-[-0.02em] text-[#f3f3f3]">Zeitlos Scans</div>
                 <p className="mt-1 text-sm font-normal text-zinc-500"> Zeitlos Scans is a small fan-driven group dedicated to translating manga we’re passionate about.</p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap justify-center gap-3 md:justify-start">
               {[
                 ["Discord", DiscordIcon],
                 ["Ko-fi", Coffee],
@@ -571,7 +610,7 @@ export default function Home() {
               <span className="font-bold text-[#b11219] drop-shadow-[0_0_10px_rgba(177,18,25,0.35)]">ARKEN</span>
             </span>
           </div>
-          <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-5 text-sm font-normal text-zinc-600 md:flex-row md:items-center md:justify-between">
+          <div className="mt-8 flex flex-col items-center gap-3 border-t border-white/10 pt-5 text-center text-sm font-normal text-zinc-600 md:flex-row md:items-center md:justify-between md:text-left">
             <span>&copy; 2026 Zeitlos Scans. All rights reserved.</span>
             <span>
               Developed with &#10084;&#65039; by{" "}
