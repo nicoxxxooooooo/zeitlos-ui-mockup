@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Bell,
   BookOpen,
@@ -145,9 +146,12 @@ function LogoMark({ footer = false }: { footer?: boolean }) {
     >
       <span className="absolute inset-[-7px] -z-10 rounded-full bg-[#8f1016]/30 blur-xl" />
       <span className="absolute inset-1 rounded-full border border-[#8f1016]/25 bg-gradient-to-br from-white/[0.08] to-transparent" />
-      <img
+      <Image
         src="/logo.png"
         alt="Zeitlos Scans logo"
+        width={footer ? 36 : 28}
+        height={footer ? 36 : 28}
+        loading={footer ? "lazy" : undefined}
         className={`relative w-auto object-contain drop-shadow-[0_0_12px_rgba(177,18,25,0.35)] ${
           footer ? "h-9" : "h-7"
         }`}
@@ -314,7 +318,14 @@ export default function Home() {
                   index === 1 ? "h-[470px] lg:h-[520px]" : "hidden h-[470px] opacity-75 lg:mt-6 lg:block"
                 }`}
               >
-                <img src={series.image} alt={`${series.title} cover`} className="absolute inset-0 h-full w-full scale-[1.03] object-cover transition duration-500 motion-safe:animate-[cover-breathe_18s_ease-in-out_infinite] motion-safe:group-hover:animate-none group-hover:scale-110" />
+                <Image
+                  src={series.image}
+                  alt={`${series.title} cover`}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 34vw"
+                  className="absolute inset-0 h-full w-full scale-[1.03] object-cover transition duration-500 motion-safe:animate-[cover-breathe_18s_ease-in-out_infinite] motion-safe:group-hover:animate-none group-hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 flex min-h-[216px] flex-col justify-end p-5 sm:p-6 lg:min-h-[232px] lg:p-8">
                   <div className="mb-2.5 flex flex-wrap gap-2">
@@ -360,7 +371,14 @@ export default function Home() {
                   index % popularSeries.length > 6 ? "lg:hidden 2xl:block" : ""
                 }`}
               >
-                <img src={image} alt={`${title} cover`} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110" />
+                <Image
+                  src={image}
+                  alt={`${title} cover`}
+                  fill
+                  loading="lazy"
+                  sizes="230px"
+                  className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-transparent transition duration-500 group-hover:from-black group-hover:via-black/60" />
                 <div className="absolute inset-x-0 bottom-0 flex min-h-[118px] translate-y-2 flex-col items-center justify-end px-5 pb-6 text-center transition duration-300 group-hover:translate-y-0">
                   <div className="mb-1.5 flex h-7 items-center justify-center">
@@ -408,10 +426,13 @@ export default function Home() {
               href={seriesHref(novel.title)}
               className="group relative min-h-[350px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#101010] shadow-2xl shadow-black/30 transition duration-300 hover:border-[#b11219]/25 hover:shadow-[0_0_34px_rgba(177,18,25,0.11)]"
             >
-              <img
+              <Image
                 src={novel.image}
                 alt=""
                 aria-hidden="true"
+                fill
+                loading="lazy"
+                sizes="(max-width: 1280px) 100vw, 50vw"
                 className="absolute inset-0 h-full w-full scale-110 object-cover opacity-24 blur-2xl transition duration-500 group-hover:scale-115"
               />
               <div className={`absolute inset-0 bg-gradient-to-br ${novel.gradient} opacity-80`} />
@@ -420,9 +441,12 @@ export default function Home() {
 
               <div className="relative grid min-h-[350px] gap-6 p-5 sm:grid-cols-[220px_1fr] sm:p-6 lg:grid-cols-[235px_1fr] lg:p-7">
                 <div className="relative mx-auto aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-3xl border border-white/10 bg-black/30 shadow-2xl shadow-black/45 sm:mx-0 sm:max-w-none">
-                  <img
+                  <Image
                     src={novel.image}
                     alt={`${novel.title} cover`}
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 640px) 240px, 235px"
                     className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10" />
@@ -478,7 +502,14 @@ export default function Home() {
           {latestReleases.map((release) => (
             <Link key={release.title} href={seriesHref(release.title)} className="group grid min-h-[280px] grid-cols-[128px_1fr] gap-4 rounded-3xl border border-[#27272a] bg-[#111111] p-4 transition duration-300 hover:border-[#b11219]/30 hover:bg-[#151515] hover:shadow-[0_0_24px_rgba(177,18,25,0.08)] sm:grid-cols-[174px_1fr] sm:gap-5">
               <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${release.gradient}`}>
-                <img src={release.image} alt={`${release.title} cover`} className="h-full min-h-[250px] w-full object-cover transition duration-500 group-hover:scale-110" />
+                <Image
+                  src={release.image}
+                  alt={`${release.title} cover`}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 640px) 128px, 174px"
+                  className="h-full min-h-[250px] w-full object-cover transition duration-500 group-hover:scale-110"
+                />
               </div>
               <div className="flex min-w-0 flex-col justify-center py-1">
                 <div className="mb-3 flex min-h-7 flex-wrap items-center gap-2">

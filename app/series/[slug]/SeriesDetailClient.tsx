@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Bell,
   BookOpen,
@@ -28,9 +29,12 @@ function LogoMark({ footer = false }: { footer?: boolean }) {
     >
       <span className="absolute inset-[-7px] -z-10 rounded-full bg-[#8f1016]/30 blur-xl" />
       <span className="absolute inset-1 rounded-full border border-[#8f1016]/25 bg-gradient-to-br from-white/[0.08] to-transparent" />
-      <img
+      <Image
         src="/logo.png"
         alt="Zeitlos Scans logo"
+        width={footer ? 36 : 28}
+        height={footer ? 36 : 28}
+        loading={footer ? "lazy" : undefined}
         className={`relative w-auto object-contain drop-shadow-[0_0_12px_rgba(177,18,25,0.35)] ${
           footer ? "h-9" : "h-7"
         }`}
@@ -147,10 +151,13 @@ export default function SeriesDetailClient({ series }: { series: SeriesDetail })
       </nav>
 
       <section className="relative overflow-hidden pt-24">
-        <img
+        <Image
           src={series.image}
           alt=""
           aria-hidden="true"
+          fill
+          loading="lazy"
+          sizes="100vw"
           className="absolute inset-0 h-full w-full scale-110 object-cover opacity-28 blur-2xl"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-[#050505]/90 to-[#050505]" />
@@ -159,7 +166,14 @@ export default function SeriesDetailClient({ series }: { series: SeriesDetail })
         <div className="relative mx-auto grid max-w-[1800px] gap-7 px-4 pb-9 pt-8 sm:px-6 lg:grid-cols-[300px_1fr] lg:px-8 lg:pb-12">
           <div className="mx-auto w-full max-w-[285px] lg:mx-0">
             <div className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-white/10 bg-black/40 shadow-2xl shadow-black/55">
-              <img src={series.image} alt={`${series.title} cover`} className="h-full w-full object-cover" />
+              <Image
+                src={series.image}
+                alt={`${series.title} cover`}
+                fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 285px, 300px"
+                className="h-full w-full object-cover"
+              />
               <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
             </div>
           </div>

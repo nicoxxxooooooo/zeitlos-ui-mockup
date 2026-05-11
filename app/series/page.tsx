@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Bell,
   BookOpen,
@@ -121,9 +122,11 @@ function LogoMark() {
     <span className="relative grid size-11 shrink-0 place-items-center rounded-full border border-white/10 bg-[#090909] shadow-[0_0_22px_rgba(177,18,25,0.22)]">
       <span className="absolute inset-[-7px] -z-10 rounded-full bg-[#8f1016]/30 blur-xl" />
       <span className="absolute inset-1 rounded-full border border-[#8f1016]/25 bg-gradient-to-br from-white/[0.08] to-transparent" />
-      <img
+      <Image
         src="/logo.png"
         alt="Zeitlos Scans logo"
+        width={28}
+        height={28}
         className="relative h-7 w-auto object-contain drop-shadow-[0_0_12px_rgba(177,18,25,0.35)]"
       />
     </span>
@@ -176,9 +179,12 @@ function SeriesCard({ series }: { series: Series }) {
   return (
     <Link href={`/series/${series.slug}`} className="group block overflow-hidden rounded-3xl border border-white/10 bg-[#111111] shadow-xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:border-[#b11219]/30 hover:bg-[#151515] hover:shadow-[0_0_28px_rgba(177,18,25,0.1)]">
       <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-950 to-black">
-        <img
+        <Image
           src={series.image}
           alt={`${series.title} cover`}
+          fill
+          loading="lazy"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
@@ -214,9 +220,12 @@ function SeriesListRow({ series }: { series: Series }) {
   return (
     <Link href={`/series/${series.slug}`} className="group grid grid-cols-[88px_1fr] gap-4 rounded-3xl border border-white/10 bg-[#111111] p-3 shadow-xl shadow-black/20 transition duration-300 hover:border-[#b11219]/30 hover:bg-[#151515] hover:shadow-[0_0_28px_rgba(177,18,25,0.1)] sm:grid-cols-[112px_1fr]">
       <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-950 to-black">
-        <img
+        <Image
           src={series.image}
           alt={`${series.title} cover`}
+          fill
+          loading="lazy"
+          sizes="(max-width: 640px) 88px, 112px"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
