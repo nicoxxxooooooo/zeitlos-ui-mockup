@@ -169,11 +169,22 @@ function DiscordIcon({ className = "size-5" }: { className?: string }) {
   );
 }
 
-function IconButton({ label, children }: { label: string; children: React.ReactNode }) {
+function IconButton({ label, children, href }: { label: string; children: React.ReactNode; href?: string }) {
+  const className =
+    "grid size-9 place-items-center rounded-full border border-white/10 bg-white/[0.045] text-zinc-400 transition duration-300 hover:border-[#b11219]/45 hover:bg-[#b11219]/10 hover:text-[#f3f3f3] hover:shadow-[0_0_20px_rgba(177,18,25,0.24)]";
+
+  if (href) {
+    return (
+      <Link href={href} aria-label={label} className={className}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
     <button
       aria-label={label}
-      className="grid size-9 place-items-center rounded-full border border-white/10 bg-white/[0.045] text-zinc-400 transition duration-300 hover:border-[#b11219]/45 hover:bg-[#b11219]/10 hover:text-[#f3f3f3] hover:shadow-[0_0_20px_rgba(177,18,25,0.24)]"
+      className={className}
     >
       {children}
     </button>
@@ -207,7 +218,7 @@ function MobileBottomNav() {
     { label: "Library", href: "#library", icon: Library },
     { label: "Home", href: "#", icon: HomeIcon, active: true },
     { label: "Alerts", href: "#", icon: Bell },
-    { label: "Profile", href: "#", icon: UserCircle },
+    { label: "Profile", href: "/profile", icon: UserCircle },
   ];
 
   return (
@@ -321,7 +332,7 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <IconButton label="Search"><Search className="size-4" /></IconButton>
             <IconButton label="Notifications"><Bell className="size-4" /></IconButton>
-            <IconButton label="Profile"><UserCircle className="size-5" /></IconButton>
+            <IconButton label="Profile" href="/profile"><UserCircle className="size-5" /></IconButton>
           </div>
         </div>
       </nav>
